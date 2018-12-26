@@ -1,21 +1,21 @@
 <?php
 
-namespace Laratrust\Traits;
+namespace Racl\Traits;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Support\Facades\Config;
-use Laratrust\Traits\LaratrustDynamicUserRelationsCalls;
+use Racl\Traits\RaclDynamicUserRelationsCalls;
 
-trait LaratrustTeamTrait
+trait RaclTeamTrait
 {
-    use LaratrustDynamicUserRelationsCalls;
+    use RaclDynamicUserRelationsCalls;
 
     /**
      * Morph by Many relationship between the role and the one of the possible user models.
@@ -26,11 +26,11 @@ trait LaratrustTeamTrait
     public function getMorphByUserRelation($relationship)
     {
         return $this->morphedByMany(
-            Config::get('laratrust.user_models')[$relationship],
+            Config::get('racl.user_models')[$relationship],
             'user',
-            Config::get('laratrust.tables.role_user'),
-            Config::get('laratrust.foreign_keys.team'),
-            Config::get('laratrust.foreign_keys.user')
+            Config::get('racl.tables.role_user'),
+            Config::get('racl.foreign_keys.team'),
+            Config::get('racl.foreign_keys.user')
         );
     }
 
@@ -41,14 +41,14 @@ trait LaratrustTeamTrait
      *
      * @return void|bool
      */
-    public static function bootLaratrustTeamTrait()
+    public static function bootRaclTeamTrait()
     {
         static::deleting(function ($team) {
             if (method_exists($team, 'bootSoftDeletes') && $team->forceDeleting) {
                 return;
             }
 
-            foreach (array_keys(Config::get('laratrust.user_models')) as $key) {
+            foreach (array_keys(Config::get('racl.user_models')) as $key) {
                 $team->$key()->sync([]);
             }
         });

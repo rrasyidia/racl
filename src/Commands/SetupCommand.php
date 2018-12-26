@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\Command;
@@ -20,14 +20,14 @@ class SetupCommand extends Command
      *
      * @var string
      */
-    protected $name = 'laratrust:setup';
+    protected $name = 'racl:setup';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Setup migration and models for Laratrust';
+    protected $description = 'Setup migration and models for Racl';
 
     /**
      * Commands to call with their description.
@@ -35,10 +35,10 @@ class SetupCommand extends Command
      * @var array
      */
     protected $calls = [
-        'laratrust:migration' => 'Creating migration',
-        'laratrust:role' => 'Creating Role model',
-        'laratrust:permission' => 'Creating Permission model',
-        'laratrust:add-trait' => 'Adding LaratrustUserTrait to User model'
+        'racl:migration' => 'Creating migration',
+        'racl:role' => 'Creating Role model',
+        'racl:permission' => 'Creating Permission model',
+        'racl:add-trait' => 'Adding RaclUserTrait to User model'
     ];
 
     /**
@@ -48,8 +48,8 @@ class SetupCommand extends Command
      */
     public function __construct()
     {
-        if (Config::get('laratrust.use_teams')) {
-            $this->calls['laratrust:team'] = 'Creating Team model';
+        if (Config::get('racl.use_teams')) {
+            $this->calls['racl:team'] = 'Creating Team model';
         }
 
         parent::__construct();

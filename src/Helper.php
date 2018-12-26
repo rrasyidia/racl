@@ -1,6 +1,6 @@
 <?php
 
-namespace Laratrust;
+namespace Racl;
 
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Config;
@@ -28,7 +28,7 @@ class Helper
             return $object;
         } elseif (is_string($object)) {
             return call_user_func_array([
-                Config::get("laratrust.models.{$type}"), 'where'
+                Config::get("racl.models.{$type}"), 'where'
             ], ['name', $object])->firstOrFail()->getKey();
         }
 
@@ -55,7 +55,7 @@ class Helper
      */
     public static function teamForeignKey()
     {
-        return Config::get('laratrust.foreign_keys.team');
+        return Config::get('racl.foreign_keys.team');
     }
 
     /**
@@ -66,12 +66,12 @@ class Helper
      */
     public static function fetchTeam($team = null)
     {
-        if (is_null($team) || !Config::get('laratrust.use_teams')) {
+        if (is_null($team) || !Config::get('racl.use_teams')) {
             return null;
         }
 
         $team = call_user_func_array(
-                    [Config::get('laratrust.models.team'), 'where'],
+                    [Config::get('racl.models.team'), 'where'],
                     ['name', $team]
                 )->first();
         return is_null($team) ? $team : $team->getKey();
@@ -116,8 +116,8 @@ class Helper
     public static function isInSameTeam($rolePermission, $team)
     {
         if (
-            !Config::get('laratrust.use_teams')
-            || (!Config::get('laratrust.teams_strict_check') && is_null($team))
+            !Config::get('racl.use_teams')
+            || (!Config::get('racl.teams_strict_check') && is_null($team))
         ) {
             return true;
         }

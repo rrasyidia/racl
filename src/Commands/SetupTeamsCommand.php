@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\Command;
@@ -20,7 +20,7 @@ class SetupTeamsCommand extends Command
      *
      * @var string
      */
-    protected $name = 'laratrust:setup-teams';
+    protected $name = 'racl:setup-teams';
 
     /**
      * The console command description.
@@ -34,7 +34,7 @@ class SetupTeamsCommand extends Command
      *
      * @var string
      */
-    protected $migrationSuffix = 'laratrust_setup_teams';
+    protected $migrationSuffix = 'racl_setup_teams';
 
     /**
      * Execute the console command.
@@ -43,16 +43,16 @@ class SetupTeamsCommand extends Command
      */
     public function handle()
     {
-        if (!Config::get('laratrust.use_teams')) {
-            $this->error('Not using teams in your Laratrust configuration file.');
+        if (!Config::get('racl.use_teams')) {
+            $this->error('Not using teams in your Racl configuration file.');
             $this->warn('Please enable the teams usage in your configuration.');
             return;
         }
 
-        $this->laravel->view->addNamespace('laratrust', substr(__DIR__, 0, -8).'views');
+        $this->laravel->view->addNamespace('racl', substr(__DIR__, 0, -8).'views');
 
         $this->line('');
-        $this->info("The Laratrust teams feature setup is going to add a migration and a model");
+        $this->info("The Racl teams feature setup is going to add a migration and a model");
 
         $existingMigrations = $this->alreadyExistingMigrations();
 
@@ -82,7 +82,7 @@ class SetupTeamsCommand extends Command
         }
 
         $this->line('Creating Team model');
-        $this->call('laratrust:team');
+        $this->call('racl:team');
 
         $this->line('');
     }
@@ -98,8 +98,8 @@ class SetupTeamsCommand extends Command
 
         $this->call('view:clear');
         $output = $this->laravel->view
-            ->make('laratrust::setup-teams')
-            ->with(['laratrust' => Config::get('laratrust')])
+            ->make('racl::setup-teams')
+            ->with(['racl' => Config::get('racl')])
             ->render();
 
         if (!file_exists($migrationPath) && $fs = fopen($migrationPath, 'x')) {
@@ -121,9 +121,9 @@ class SetupTeamsCommand extends Command
     protected function getExistingMigrationsWarning(array $existingMigrations)
     {
         if (count($existingMigrations) > 1) {
-            $base = "Laratrust setup teams migrations already exist.\nFollowing files were found: ";
+            $base = "Racl setup teams migrations already exist.\nFollowing files were found: ";
         } else {
-            $base = "Laratrust setup teams migration already exists.\nFollowing file was found: ";
+            $base = "Racl setup teams migration already exists.\nFollowing file was found: ";
         }
 
         return $base . array_reduce($existingMigrations, function ($carry, $fileName) {

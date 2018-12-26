@@ -1,19 +1,19 @@
 <?php
 
-namespace Laratrust\Traits;
+namespace Racl\Traits;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cache;
 
-trait LaratrustDynamicUserRelationsCalls
+trait RaclDynamicUserRelationsCalls
 {
     /**
      * Get a relationship.
@@ -38,7 +38,7 @@ trait LaratrustDynamicUserRelationsCalls
      */
     public function __get($key)
     {
-        if (in_array($key, array_keys(Config::get('laratrust.user_models')))) {
+        if (in_array($key, array_keys(Config::get('racl.user_models')))) {
             return $this->getUsersRelationValue($key);
         }
 
@@ -54,7 +54,7 @@ trait LaratrustDynamicUserRelationsCalls
      */
     public function __call($method, $parameters)
     {
-        if (in_array($method, array_keys(Config::get('laratrust.user_models')))) {
+        if (in_array($method, array_keys(Config::get('racl.user_models')))) {
             return $this->getMorphByUserRelation($method);
         }
 

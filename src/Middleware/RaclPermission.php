@@ -1,18 +1,18 @@
 <?php
 
-namespace Laratrust\Middleware;
+namespace Racl\Middleware;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Closure;
 
-class LaratrustPermission extends LaratrustMiddleware
+class RaclPermission extends RaclMiddleware
 {
     /**
      * Handle incoming request.

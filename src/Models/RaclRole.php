@@ -1,23 +1,23 @@
 <?php
 
-namespace Laratrust\Models;
+namespace Racl\Models;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
-use Laratrust\Contracts\LaratrustRoleInterface;
-use Laratrust\Traits\LaratrustRoleTrait;
+use Racl\Contracts\RaclRoleInterface;
+use Racl\Traits\RaclRoleTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
-class LaratrustRole extends Model implements LaratrustRoleInterface
+class RaclRole extends Model implements RaclRoleInterface
 {
-    use LaratrustRoleTrait;
+    use RaclRoleTrait;
 
     /**
      * The database table used by the model.
@@ -35,6 +35,6 @@ class LaratrustRole extends Model implements LaratrustRoleInterface
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = Config::get('laratrust.tables.roles');
+        $this->table = Config::get('racl.tables.roles');
     }
 }

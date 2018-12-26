@@ -1,6 +1,6 @@
 <?php
 
-namespace Laratrust;
+namespace Racl;
 
 use Illuminate\Support\Facades\Blade;
 
@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Blade;
  * the blade directives making a difference
  * between the version 5.2 and 5.3
  */
-class LaratrustRegistersBladeDirectives
+class RaclRegistersBladeDirectives
 {
     /**
      * Handles the registration of the blades directives.
@@ -35,29 +35,29 @@ class LaratrustRegistersBladeDirectives
      */
     protected function registerWithParenthesis()
     {
-        // Call to Laratrust::hasRole.
+        // Call to Racl::hasRole.
         Blade::directive('role', function ($expression) {
-            return "<?php if (app('laratrust')->hasRole({$expression})) : ?>";
+            return "<?php if (app('racl')->hasRole({$expression})) : ?>";
         });
 
-        // Call to Laratrust::can.
+        // Call to Racl::can.
         Blade::directive('permission', function ($expression) {
-            return "<?php if (app('laratrust')->can({$expression})) : ?>";
+            return "<?php if (app('racl')->can({$expression})) : ?>";
         });
 
-        // Call to Laratrust::ability.
+        // Call to Racl::ability.
         Blade::directive('ability', function ($expression) {
-            return "<?php if (app('laratrust')->ability({$expression})) : ?>";
+            return "<?php if (app('racl')->ability({$expression})) : ?>";
         });
 
-        // Call to Laratrust::canAndOwns.
+        // Call to Racl::canAndOwns.
         Blade::directive('canAndOwns', function ($expression) {
-            return "<?php if (app('laratrust')->canAndOwns({$expression})) : ?>";
+            return "<?php if (app('racl')->canAndOwns({$expression})) : ?>";
         });
 
-        // Call to Laratrust::hasRoleAndOwns.
+        // Call to Racl::hasRoleAndOwns.
         Blade::directive('hasRoleAndOwns', function ($expression) {
-            return "<?php if (app('laratrust')->hasRoleAndOwns({$expression})) : ?>";
+            return "<?php if (app('racl')->hasRoleAndOwns({$expression})) : ?>";
         });
     }
 
@@ -68,29 +68,29 @@ class LaratrustRegistersBladeDirectives
      */
     protected function registerWithoutParenthesis()
     {
-        // Call to Laratrust::hasRole.
+        // Call to Racl::hasRole.
         Blade::directive('role', function ($expression) {
-            return "<?php if (app('laratrust')->hasRole{$expression}) : ?>";
+            return "<?php if (app('racl')->hasRole{$expression}) : ?>";
         });
 
-        // Call to Laratrust::can.
+        // Call to Racl::can.
         Blade::directive('permission', function ($expression) {
-            return "<?php if (app('laratrust')->can{$expression}) : ?>";
+            return "<?php if (app('racl')->can{$expression}) : ?>";
         });
 
-        // Call to Laratrust::ability.
+        // Call to Racl::ability.
         Blade::directive('ability', function ($expression) {
-            return "<?php if (app('laratrust')->ability{$expression}) : ?>";
+            return "<?php if (app('racl')->ability{$expression}) : ?>";
         });
 
-        // Call to Laratrust::canAndOwns.
+        // Call to Racl::canAndOwns.
         Blade::directive('canAndOwns', function ($expression) {
-            return "<?php if (app('laratrust')->canAndOwns{$expression}) : ?>";
+            return "<?php if (app('racl')->canAndOwns{$expression}) : ?>";
         });
 
-        // Call to Laratrust::hasRoleAndOwns.
+        // Call to Racl::hasRoleAndOwns.
         Blade::directive('hasRoleAndOwns', function ($expression) {
-            return "<?php if (app('laratrust')->hasRoleAndOwns{$expression}) : ?>";
+            return "<?php if (app('racl')->hasRoleAndOwns{$expression}) : ?>";
         });
     }
 
@@ -102,19 +102,19 @@ class LaratrustRegistersBladeDirectives
     protected function registerClosingDirectives()
     {
         Blade::directive('endrole', function () {
-            return "<?php endif; // app('laratrust')->hasRole ?>";
+            return "<?php endif; // app('racl')->hasRole ?>";
         });
 
         Blade::directive('endpermission', function () {
-            return "<?php endif; // app('laratrust')->can ?>";
+            return "<?php endif; // app('racl')->can ?>";
         });
 
         Blade::directive('endability', function () {
-            return "<?php endif; // app('laratrust')->ability ?>";
+            return "<?php endif; // app('racl')->ability ?>";
         });
 
         Blade::directive('endOwns', function () {
-            return "<?php endif; // app('laratrust')->hasRoleAndOwns or canAndOwns ?>";
+            return "<?php endif; // app('racl')->hasRoleAndOwns or canAndOwns ?>";
         });
     }
 }

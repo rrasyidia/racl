@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\GeneratorCommand;
@@ -20,7 +20,7 @@ class MakeTeamCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'laratrust:team';
+    protected $name = 'racl:team';
 
     /**
      * The console command description.
@@ -53,7 +53,7 @@ class MakeTeamCommand extends GeneratorCommand
      */
     protected function getNameInput()
     {
-        return Config::get('laratrust.models.team', 'Team');
+        return Config::get('racl.models.team', 'Team');
     }
 
     /**

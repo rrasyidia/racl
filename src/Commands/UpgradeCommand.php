@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\Command;
@@ -20,21 +20,21 @@ class UpgradeCommand extends Command
      *
      * @var string
      */
-    protected $name = 'laratrust:upgrade';
+    protected $name = 'racl:upgrade';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Creates a migration to upgrade laratrust from version 3.2 to 4.0.';
+    protected $description = 'Creates a migration to upgrade racl from version 3.2 to 4.0.';
 
     /**
      * Suffix of the migration name.
      *
      * @var string
      */
-    protected $migrationSuffix = 'laratrust_upgrade_tables';
+    protected $migrationSuffix = 'racl_upgrade_tables';
 
     /**
      * Execute the console command.
@@ -43,10 +43,10 @@ class UpgradeCommand extends Command
      */
     public function handle()
     {
-        $this->laravel->view->addNamespace('laratrust', substr(__DIR__, 0, -8).'views');
+        $this->laravel->view->addNamespace('racl', substr(__DIR__, 0, -8).'views');
 
         $this->line('');
-        $this->info("The Laratrust upgrade migration will be created in the database/migration directory");
+        $this->info("The Racl upgrade migration will be created in the database/migration directory");
 
         $existingMigrations = $this->alreadyExistingMigrations();
 
@@ -89,8 +89,8 @@ class UpgradeCommand extends Command
 
         $this->call('view:clear');
         $output = $this->laravel->view
-            ->make('laratrust::upgrade-migration')
-            ->with(['laratrust' => Config::get('laratrust')])
+            ->make('racl::upgrade-migration')
+            ->with(['racl' => Config::get('racl')])
             ->render();
 
         if (!file_exists($migrationPath) && $fs = fopen($migrationPath, 'x')) {
@@ -112,9 +112,9 @@ class UpgradeCommand extends Command
     protected function getExistingMigrationsWarning(array $existingMigrations)
     {
         if (count($existingMigrations) > 1) {
-            $base = "Laratrust upgrade migrations already exist.\nFollowing files were found: ";
+            $base = "Racl upgrade migrations already exist.\nFollowing files were found: ";
         } else {
-            $base = "Laratrust upgrade migration already exists.\nFollowing file was found: ";
+            $base = "Racl upgrade migration already exists.\nFollowing file was found: ";
         }
 
         return $base . array_reduce($existingMigrations, function ($carry, $fileName) {

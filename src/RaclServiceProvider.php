@@ -1,19 +1,19 @@
 <?php
 
-namespace Laratrust;
+namespace Racl;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
-class LaratrustServiceProvider extends ServiceProvider
+class RaclServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -28,15 +28,15 @@ class LaratrustServiceProvider extends ServiceProvider
      * @var array
      */
     protected $commands = [
-        'Migration' => 'command.laratrust.migration',
-        'MakeRole' => 'command.laratrust.role',
-        'MakePermission' => 'command.laratrust.permission',
-        'MakeTeam' => 'command.laratrust.team',
-        'AddLaratrustUserTraitUse' => 'command.laratrust.add-trait',
-        'Setup' => 'command.laratrust.setup',
-        'SetupTeams' => 'command.laratrust.setup-teams',
-        'MakeSeeder' => 'command.laratrust.seeder',
-        'Upgrade' => 'command.laratrust.upgrade'
+        'Migration' => 'command.racl.migration',
+        'MakeRole' => 'command.racl.role',
+        'MakePermission' => 'command.racl.permission',
+        'MakeTeam' => 'command.racl.team',
+        'AddRaclUserTraitUse' => 'command.racl.add-trait',
+        'Setup' => 'command.racl.setup',
+        'SetupTeams' => 'command.racl.setup-teams',
+        'MakeSeeder' => 'command.racl.seeder',
+        'Upgrade' => 'command.racl.upgrade'
     ];
 
     /**
@@ -45,9 +45,9 @@ class LaratrustServiceProvider extends ServiceProvider
      * @var array
      */
     protected $middlewares = [
-        'role' => \Laratrust\Middleware\LaratrustRole::class,
-        'permission' => \Laratrust\Middleware\LaratrustPermission::class,
-        'ability' => \Laratrust\Middleware\LaratrustAbility::class,
+        'role' => \Racl\Middleware\RaclRole::class,
+        'permission' => \Racl\Middleware\RaclPermission::class,
+        'ability' => \Racl\Middleware\RaclAbility::class,
     ];
 
     /**
@@ -59,9 +59,9 @@ class LaratrustServiceProvider extends ServiceProvider
     {
         // Register published configuration.
         $this->publishes([
-            __DIR__.'/config/laratrust.php' => config_path('laratrust.php'),
-            __DIR__.'/config/laratrust_seeder.php' => config_path('laratrust_seeder.php'),
-        ], 'laratrust');
+            __DIR__.'/config/racl.php' => config_path('racl.php'),
+            __DIR__.'/config/racl_seeder.php' => config_path('racl_seeder.php'),
+        ], 'racl');
 
         $this->useMorphMapForRelationships();
 
@@ -79,8 +79,8 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     protected function useMorphMapForRelationships()
     {
-        if ($this->app['config']->get('laratrust.use_morph_map')) {
-            Relation::morphMap($this->app['config']->get('laratrust.user_models'));
+        if ($this->app['config']->get('racl.use_morph_map')) {
+            Relation::morphMap($this->app['config']->get('racl.user_models'));
         }
     }
 
@@ -91,7 +91,7 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     protected function autoRegisterMiddlewares()
     {
-        if (!$this->app['config']->get('laratrust.middleware.register')) {
+        if (!$this->app['config']->get('racl.middleware.register')) {
             return;
         }
 
@@ -117,7 +117,7 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerLaratrust();
+        $this->registerRacl();
 
         $this->registerCommands();
 
@@ -131,7 +131,7 @@ class LaratrustServiceProvider extends ServiceProvider
      */
     private function registerBladeDirectives()
     {
-        (new LaratrustRegistersBladeDirectives)->handle($this->app->version());
+        (new RaclRegistersBladeDirectives)->handle($this->app->version());
     }
 
     /**
@@ -139,13 +139,13 @@ class LaratrustServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    private function registerLaratrust()
+    private function registerRacl()
     {
-        $this->app->bind('laratrust', function ($app) {
-            return new Laratrust($app);
+        $this->app->bind('racl', function ($app) {
+            return new Racl($app);
         });
 
-        $this->app->alias('laratrust', 'Laratrust\Laratrust');
+        $this->app->alias('racl', 'Racl\Racl');
     }
 
     /**
@@ -166,77 +166,77 @@ class LaratrustServiceProvider extends ServiceProvider
 
     protected function registerMigrationCommand()
     {
-        $this->app->singleton('command.laratrust.migration', function () {
-            return new \Laratrust\Commands\MigrationCommand();
+        $this->app->singleton('command.racl.migration', function () {
+            return new \Racl\Commands\MigrationCommand();
         });
     }
 
     protected function registerMakeRoleCommand()
     {
-        $this->app->singleton('command.laratrust.role', function ($app) {
-            return new \Laratrust\Commands\MakeRoleCommand($app['files']);
+        $this->app->singleton('command.racl.role', function ($app) {
+            return new \Racl\Commands\MakeRoleCommand($app['files']);
         });
     }
 
     protected function registerMakePermissionCommand()
     {
-        $this->app->singleton('command.laratrust.permission', function ($app) {
-            return new \Laratrust\Commands\MakePermissionCommand($app['files']);
+        $this->app->singleton('command.racl.permission', function ($app) {
+            return new \Racl\Commands\MakePermissionCommand($app['files']);
         });
     }
 
     protected function registerMakeTeamCommand()
     {
-        $this->app->singleton('command.laratrust.team', function ($app) {
-            return new \Laratrust\Commands\MakeTeamCommand($app['files']);
+        $this->app->singleton('command.racl.team', function ($app) {
+            return new \Racl\Commands\MakeTeamCommand($app['files']);
         });
     }
 
-    protected function registerAddLaratrustUserTraitUseCommand()
+    protected function registerAddRaclUserTraitUseCommand()
     {
-        $this->app->singleton('command.laratrust.add-trait', function () {
-            return new \Laratrust\Commands\AddLaratrustUserTraitUseCommand();
+        $this->app->singleton('command.racl.add-trait', function () {
+            return new \Racl\Commands\AddRaclUserTraitUseCommand();
         });
     }
 
     protected function registerSetupCommand()
     {
-        $this->app->singleton('command.laratrust.setup', function () {
-            return new \Laratrust\Commands\SetupCommand();
+        $this->app->singleton('command.racl.setup', function () {
+            return new \Racl\Commands\SetupCommand();
         });
     }
 
     protected function registerSetupTeamsCommand()
     {
-        $this->app->singleton('command.laratrust.setup-teams', function () {
-            return new \Laratrust\Commands\SetupTeamsCommand();
+        $this->app->singleton('command.racl.setup-teams', function () {
+            return new \Racl\Commands\SetupTeamsCommand();
         });
     }
 
     protected function registerMakeSeederCommand()
     {
-        $this->app->singleton('command.laratrust.seeder', function () {
-            return new \Laratrust\Commands\MakeSeederCommand();
+        $this->app->singleton('command.racl.seeder', function () {
+            return new \Racl\Commands\MakeSeederCommand();
         });
     }
 
     protected function registerUpgradeCommand()
     {
-        $this->app->singleton('command.laratrust.upgrade', function () {
-            return new \Laratrust\Commands\UpgradeCommand();
+        $this->app->singleton('command.racl.upgrade', function () {
+            return new \Racl\Commands\UpgradeCommand();
         });
     }
 
     /**
-     * Merges user's and laratrust's configs.
+     * Merges user's and racl's configs.
      *
      * @return void
      */
     private function mergeConfig()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/laratrust.php',
-            'laratrust'
+            __DIR__.'/config/racl.php',
+            'racl'
         );
     }
 

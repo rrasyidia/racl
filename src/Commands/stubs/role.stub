@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use Laratrust\Models\LaratrustRole;
+use Racl\Models\RaclRole;
 
-class DummyClass extends LaratrustRole
+class DummyClass extends RaclRole
 {
     //
 }

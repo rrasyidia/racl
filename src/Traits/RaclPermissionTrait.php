@@ -1,21 +1,21 @@
 <?php
 
-namespace Laratrust\Traits;
+namespace Racl\Traits;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Support\Facades\Config;
-use Laratrust\Traits\LaratrustDynamicUserRelationsCalls;
+use Racl\Traits\RaclDynamicUserRelationsCalls;
 
-trait LaratrustPermissionTrait
+trait RaclPermissionTrait
 {
-    use LaratrustDynamicUserRelationsCalls;
+    use RaclDynamicUserRelationsCalls;
 
     /**
      * Boots the permission model and attaches event listener to
@@ -24,10 +24,10 @@ trait LaratrustPermissionTrait
      *
      * @return void|bool
      */
-    public static function bootLaratrustPermissionTrait()
+    public static function bootRaclPermissionTrait()
     {
         static::deleting(function ($permission) {
-            if (!method_exists(Config::get('laratrust.models.permission'), 'bootSoftDeletes')) {
+            if (!method_exists(Config::get('racl.models.permission'), 'bootSoftDeletes')) {
                 $permission->roles()->sync([]);
             }
         });
@@ -39,7 +39,7 @@ trait LaratrustPermissionTrait
 
             $permission->roles()->sync([]);
 
-            foreach (array_keys(Config::get('laratrust.user_models')) as $key) {
+            foreach (array_keys(Config::get('racl.user_models')) as $key) {
                 $permission->$key()->sync([]);
             }
         });
@@ -53,10 +53,10 @@ trait LaratrustPermissionTrait
     public function roles()
     {
         return $this->belongsToMany(
-            Config::get('laratrust.models.role'),
-            Config::get('laratrust.tables.permission_role'),
-            Config::get('laratrust.foreign_keys.permission'),
-            Config::get('laratrust.foreign_keys.role')
+            Config::get('racl.models.role'),
+            Config::get('racl.tables.permission_role'),
+            Config::get('racl.foreign_keys.permission'),
+            Config::get('racl.foreign_keys.role')
         );
     }
 
@@ -69,11 +69,11 @@ trait LaratrustPermissionTrait
     public function getMorphByUserRelation($relationship)
     {
         return $this->morphedByMany(
-            Config::get('laratrust.user_models')[$relationship],
+            Config::get('racl.user_models')[$relationship],
             'user',
-            Config::get('laratrust.tables.permission_user'),
-            Config::get('laratrust.foreign_keys.permission'),
-            Config::get('laratrust.foreign_keys.user')
+            Config::get('racl.tables.permission_user'),
+            Config::get('racl.foreign_keys.permission'),
+            Config::get('racl.foreign_keys.user')
         );
     }
 }

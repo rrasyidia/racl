@@ -1,16 +1,16 @@
 <?php
 
-namespace Laratrust;
+namespace Racl;
 
 /**
  * This class is the main entry point of laratrust. Usually this the interaction
- * with this class will be done through the Laratrust Facade
+ * with this class will be done through the Racl Facade
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
-class Laratrust
+class Racl
 {
     /**
      * Laravel application.

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 return [
@@ -25,7 +25,7 @@ return [
     | Use cache in the package
     |--------------------------------------------------------------------------
     |
-    | Defines if Laratrust will use Laravel's Cache to cache the roles and permissions.
+    | Defines if Racl will use Laravel's Cache to cache the roles and permissions.
     |
     */
     'use_cache' => true,
@@ -35,7 +35,7 @@ return [
     | Use teams feature in the package
     |--------------------------------------------------------------------------
     |
-    | Defines if Laratrust will use the teams feature.
+    | Defines if Racl will use the teams feature.
     | Please check the docs to see what you need to do in case you have the package already configured.
     |
     */
@@ -56,7 +56,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laratrust User Models
+    | Racl User Models
     |--------------------------------------------------------------------------
     |
     | This is the array that contains the information of the user models.
@@ -72,11 +72,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laratrust Models
+    | Racl Models
     |--------------------------------------------------------------------------
     |
-    | These are the models used by Laratrust to define the roles, permissions and teams.
-    | If you want the Laratrust models to be in a different namespace or
+    | These are the models used by Racl to define the roles, permissions and teams.
+    | If you want the Racl models to be in a different namespace or
     | to have a different name, you can do it here.
     |
     */
@@ -100,10 +100,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laratrust Tables
+    | Racl Tables
     |--------------------------------------------------------------------------
     |
-    | These are the tables used by Laratrust to store all the authorization data.
+    | These are the tables used by Racl to store all the authorization data.
     |
     */
     'tables' => [
@@ -141,7 +141,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laratrust Foreign Keys
+    | Racl Foreign Keys
     |--------------------------------------------------------------------------
     |
     | These are the foreign keys used by laratrust in the intermediate tables.
@@ -149,22 +149,22 @@ return [
     */
     'foreign_keys' => [
         /**
-         * User foreign key on Laratrust's role_user and permission_user tables.
+         * User foreign key on Racl's role_user and permission_user tables.
          */
         'user' => 'user_id',
 
         /**
-         * Role foreign key on Laratrust's role_user and permission_role tables.
+         * Role foreign key on Racl's role_user and permission_role tables.
          */
         'role' => 'role_id',
 
         /**
-         * Role foreign key on Laratrust's permission_user and permission_role tables.
+         * Role foreign key on Racl's permission_user and permission_role tables.
          */
         'permission' => 'permission_id',
 
         /**
-         * Role foreign key on Laratrust's role_user and permission_user tables.
+         * Role foreign key on Racl's role_user and permission_user tables.
          */
         'team' => 'team_id',
 
@@ -172,10 +172,10 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laratrust Middleware
+    | Racl Middleware
     |--------------------------------------------------------------------------
     |
-    | This configuration helps to customize the Laratrust middlewares behavior.
+    | This configuration helps to customize the Racl middlewares behavior.
     |
     */
     'middleware' => [
@@ -199,7 +199,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Laratrust Magic 'can' Method
+    | Racl Magic 'can' Method
     |--------------------------------------------------------------------------
     |
     | Supported cases for the magic can method (Refer to the docs).

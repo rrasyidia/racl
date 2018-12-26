@@ -1,18 +1,18 @@
 <?php
 
-namespace Laratrust;
+namespace Racl;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Support\Facades\Facade;
 
-class LaratrustFacade extends Facade
+class RaclFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -21,6 +21,6 @@ class LaratrustFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'laratrust';
+        return 'racl';
     }
 }

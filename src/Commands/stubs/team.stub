@@ -2,9 +2,9 @@
 
 namespace DummyNamespace;
 
-use Laratrust\Models\LaratrustTeam;
+use Racl\Models\RaclTeam;
 
-class DummyClass extends LaratrustTeam
+class DummyClass extends RaclTeam
 {
     //
 }

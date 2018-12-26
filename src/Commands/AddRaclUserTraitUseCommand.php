@@ -1,37 +1,37 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Config;
-use Laratrust\Traits\LaratrustUserTrait;
+use Racl\Traits\RaclUserTrait;
 use Traitor\Traitor;
 
-class AddLaratrustUserTraitUseCommand extends Command
+class AddRaclUserTraitUseCommand extends Command
 {
     /**
      * The console command name.
      *
      * @var string
      */
-    protected $name = 'laratrust:add-trait';
+    protected $name = 'racl:add-trait';
 
     /**
      * Trait added to User model
      *
      * @var string
      */
-    protected $targetTrait = LaratrustUserTrait::class;
+    protected $targetTrait = RaclUserTrait::class;
 
     /**
      * Execute the console command.
@@ -48,36 +48,36 @@ class AddLaratrustUserTraitUseCommand extends Command
                 return;
             }
 
-            if ($this->alreadyUsesLaratrustUserTrait($model)) {
-                $this->error("Class $model already uses LaratrustUserTrait.");
+            if ($this->alreadyUsesRaclUserTrait($model)) {
+                $this->error("Class $model already uses RaclUserTrait.");
                 continue;
             }
 
             Traitor::addTrait($this->targetTrait)->toClass($model);
         }
 
-        $this->info("LaratrustUserTrait added successfully to {$models->implode(', ')}");
+        $this->info("RaclUserTrait added successfully to {$models->implode(', ')}");
     }
 
     /**
-     * Check if the class already uses LaratrustUserTrait.
+     * Check if the class already uses RaclUserTrait.
      *
      * @param  string  $model
      * @return bool
      */
-    protected function alreadyUsesLaratrustUserTrait($model)
+    protected function alreadyUsesRaclUserTrait($model)
     {
-        return in_array(LaratrustUserTrait::class, class_uses($model));
+        return in_array(RaclUserTrait::class, class_uses($model));
     }
 
     /**
-     * Get the description of which clases the LaratrustUserTrait was added.
+     * Get the description of which clases the RaclUserTrait was added.
      *
      * @return string
      */
     public function getDescription()
     {
-        return "Add LaratrustUserTrait to {$this->getUserModels()->implode(', ')} class";
+        return "Add RaclUserTrait to {$this->getUserModels()->implode(', ')} class";
     }
 
     /**
@@ -87,6 +87,6 @@ class AddLaratrustUserTraitUseCommand extends Command
      */
     protected function getUserModels()
     {
-        return new Collection(Config::get('laratrust.user_models', []));
+        return new Collection(Config::get('racl.user_models', []));
     }
 }

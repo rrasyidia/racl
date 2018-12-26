@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\Command;
@@ -21,21 +21,21 @@ class MigrationCommand extends Command
      *
      * @var string
      */
-    protected $name = 'laratrust:migration';
+    protected $name = 'racl:migration';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Creates a migration following the Laratrust specifications.';
+    protected $description = 'Creates a migration following the Racl specifications.';
 
     /**
      * Suffix of the migration name.
      *
      * @var string
      */
-    protected $migrationSuffix = 'laratrust_setup_tables';
+    protected $migrationSuffix = 'racl_setup_tables';
 
     /**
      * Execute the console command.
@@ -44,10 +44,10 @@ class MigrationCommand extends Command
      */
     public function handle()
     {
-        $this->laravel->view->addNamespace('laratrust', substr(__DIR__, 0, -8).'views');
+        $this->laravel->view->addNamespace('racl', substr(__DIR__, 0, -8).'views');
         $this->line('');
-        $this->info("Laratrust Migration Creation.");
-        if (Config::get('laratrust.use_teams')) {
+        $this->info("Racl Migration Creation.");
+        if (Config::get('racl.use_teams')) {
             $this->comment('You are using the teams feature.');
         }
         $this->line('');
@@ -93,8 +93,8 @@ class MigrationCommand extends Command
         $migrationPath = $this->getMigrationPath();
 
         $output = $this->laravel->view
-            ->make('laratrust::migration')
-            ->with(['laratrust' => Config::get('laratrust')])
+            ->make('racl::migration')
+            ->with(['racl' => Config::get('racl')])
             ->render();
 
         if (!file_exists($migrationPath) && $fs = fopen($migrationPath, 'x')) {
@@ -115,9 +115,9 @@ class MigrationCommand extends Command
      */
     protected function generateMigrationMessage()
     {
-        $tables = Collection::make(Config::get('laratrust.tables'))
+        $tables = Collection::make(Config::get('racl.tables'))
             ->reject(function ($value, $key) {
-                return $key == 'teams' && !Config::get('laratrust.use_teams');
+                return $key == 'teams' && !Config::get('racl.use_teams');
             })
             ->sort();
 
@@ -135,9 +135,9 @@ class MigrationCommand extends Command
     protected function getExistingMigrationsWarning(array $existingMigrations)
     {
         if (count($existingMigrations) > 1) {
-            $base = "Laratrust migrations already exist.\nFollowing files were found: ";
+            $base = "Racl migrations already exist.\nFollowing files were found: ";
         } else {
-            $base = "Laratrust migration already exists.\nFollowing file was found: ";
+            $base = "Racl migration already exists.\nFollowing file was found: ";
         }
 
         return $base . array_reduce($existingMigrations, function ($carry, $fileName) {

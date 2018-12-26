@@ -1,23 +1,23 @@
 <?php
 
-namespace Laratrust\Traits;
+namespace Racl\Traits;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
-use Laratrust\Helper;
+use Racl\Helper;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
-trait LaratrustRoleTrait
+trait RaclRoleTrait
 {
-    use LaratrustDynamicUserRelationsCalls;
-    use LaratrustHasEvents;
+    use RaclDynamicUserRelationsCalls;
+    use RaclHasEvents;
 
     /**
      * Boots the role model and attaches event listener to
@@ -26,7 +26,7 @@ trait LaratrustRoleTrait
      *
      * @return void|bool
      */
-    public static function bootLaratrustRoleTrait()
+    public static function bootRaclRoleTrait()
     {
         $flushCache = function ($role) {
             $role->flushCache();
@@ -47,7 +47,7 @@ trait LaratrustRoleTrait
 
             $role->permissions()->sync([]);
 
-            foreach (array_keys(Config::get('laratrust.user_models')) as $key) {
+            foreach (array_keys(Config::get('racl.user_models')) as $key) {
                 $role->$key()->sync([]);
             }
         });
@@ -62,9 +62,9 @@ trait LaratrustRoleTrait
      */
     public function cachedPermissions()
     {
-        $cacheKey = 'laratrust_permissions_for_role_' . $this->getKey();
+        $cacheKey = 'racl_permissions_for_role_' . $this->getKey();
 
-        if (! Config::get('laratrust.use_cache')) {
+        if (! Config::get('racl.use_cache')) {
             return $this->permissions()->get();
         }
 
@@ -82,11 +82,11 @@ trait LaratrustRoleTrait
     public function getMorphByUserRelation($relationship)
     {
         return $this->morphedByMany(
-            Config::get('laratrust.user_models')[$relationship],
+            Config::get('racl.user_models')[$relationship],
             'user',
-            Config::get('laratrust.tables.role_user'),
-            Config::get('laratrust.foreign_keys.role'),
-            Config::get('laratrust.foreign_keys.user')
+            Config::get('racl.tables.role_user'),
+            Config::get('racl.foreign_keys.role'),
+            Config::get('racl.foreign_keys.user')
         );
     }
 
@@ -98,10 +98,10 @@ trait LaratrustRoleTrait
     public function permissions()
     {
         return $this->belongsToMany(
-            Config::get('laratrust.models.permission'),
-            Config::get('laratrust.tables.permission_role'),
-            Config::get('laratrust.foreign_keys.role'),
-            Config::get('laratrust.foreign_keys.permission')
+            Config::get('racl.models.permission'),
+            Config::get('racl.tables.permission_role'),
+            Config::get('racl.foreign_keys.role'),
+            Config::get('racl.foreign_keys.permission')
         );
     }
 
@@ -136,7 +136,7 @@ trait LaratrustRoleTrait
         }
 
         foreach ($this->cachedPermissions() as $perm) {
-            $perm = Helper::hidrateModel(Config::get('laratrust.models.permission'), $perm);
+            $perm = Helper::hidrateModel(Config::get('racl.models.permission'), $perm);
 
             if (str_is($permission, $perm->name)) {
                 return true;
@@ -162,7 +162,7 @@ trait LaratrustRoleTrait
 
         $changes = $this->permissions()->sync($permissions);
         $this->flushCache();
-        $this->fireLaratrustEvent("permission.synced", [$this, $changes]);
+        $this->fireRaclEvent("permission.synced", [$this, $changes]);
 
         return $this;
     }
@@ -179,7 +179,7 @@ trait LaratrustRoleTrait
 
         $this->permissions()->attach($permission);
         $this->flushCache();
-        $this->fireLaratrustEvent("permission.attached", [$this, $permission]);
+        $this->fireRaclEvent("permission.attached", [$this, $permission]);
 
         return $this;
     }
@@ -196,7 +196,7 @@ trait LaratrustRoleTrait
 
         $this->permissions()->detach($permission);
         $this->flushCache();
-        $this->fireLaratrustEvent("permission.detached", [$this, $permission]);
+        $this->fireRaclEvent("permission.detached", [$this, $permission]);
 
         return $this;
     }
@@ -242,6 +242,6 @@ trait LaratrustRoleTrait
      */
     public function flushCache()
     {
-        Cache::forget('laratrust_permissions_for_role_' . $this->getKey());
+        Cache::forget('racl_permissions_for_role_' . $this->getKey());
     }
 }

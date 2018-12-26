@@ -1,16 +1,16 @@
 <?php
 
-namespace Laratrust\Contracts;
+namespace Racl\Contracts;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
-interface LaratrustPermissionInterface
+interface RaclPermissionInterface
 {
 
     /**

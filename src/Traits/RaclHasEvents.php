@@ -1,16 +1,16 @@
 <?php
 
-namespace Laratrust\Traits;
+namespace Racl\Traits;
 
-trait LaratrustHasEvents
+trait RaclHasEvents
 {
     /**
-     * Register an observer to the Laratrust events.
+     * Register an observer to the Racl events.
      *
      * @param  object|string  $class
      * @return void
      */
-    public static function laratrustObserve($class)
+    public static function raclObserve($class)
     {
         $observables = [
             'roleAttached',
@@ -25,7 +25,7 @@ trait LaratrustHasEvents
 
         foreach ($observables as $event) {
             if (method_exists($class, $event)) {
-                static::registerLaratrustEvent(\Illuminate\Support\Str::snake($event, '.'), $className.'@'.$event);
+                static::registerRaclEvent(\Illuminate\Support\Str::snake($event, '.'), $className.'@'.$event);
             }
         }
     }
@@ -37,97 +37,97 @@ trait LaratrustHasEvents
      * @param  array  $payload
      * @return mixed
      */
-    protected function fireLaratrustEvent($event, array $payload)
+    protected function fireRaclEvent($event, array $payload)
     {
         if (! isset(static::$dispatcher)) {
             return true;
         }
 
         return static::$dispatcher->fire(
-            "laratrust.{$event}: ".static::class,
+            "racl.{$event}: ".static::class,
             $payload
         );
     }
 
     /**
-     * Register a laratrust event with the dispatcher.
+     * Register a racl event with the dispatcher.
      *
      * @param  string  $event
      * @param  \Closure|string  $callback
      * @return void
      */
-    public static function registerLaratrustEvent($event, $callback)
+    public static function registerRaclEvent($event, $callback)
     {
         if (isset(static::$dispatcher)) {
             $name = static::class;
 
-            static::$dispatcher->listen("laratrust.{$event}: {$name}", $callback);
+            static::$dispatcher->listen("racl.{$event}: {$name}", $callback);
         }
     }
 
     /**
-     * Register a role attached laratrust event with the dispatcher.
+     * Register a role attached racl event with the dispatcher.
      *
      * @param  \Closure|string  $callback
      * @return void
      */
     public static function roleAttached($callback)
     {
-        static::registerLaratrustEvent('role.attached', $callback);
+        static::registerRaclEvent('role.attached', $callback);
     }
 
     /**
-     * Register a role detached laratrust event with the dispatcher.
+     * Register a role detached racl event with the dispatcher.
      *
      * @param  \Closure|string  $callback
      * @return void
      */
     public static function roleDetached($callback)
     {
-        static::registerLaratrustEvent('role.detached', $callback);
+        static::registerRaclEvent('role.detached', $callback);
     }
 
     /**
-     * Register a permission attached laratrust event with the dispatcher.
+     * Register a permission attached racl event with the dispatcher.
      *
      * @param  \Closure|string  $callback
      * @return void
      */
     public static function permissionAttached($callback)
     {
-        static::registerLaratrustEvent('permission.attached', $callback);
+        static::registerRaclEvent('permission.attached', $callback);
     }
 
     /**
-     * Register a permission detached laratrust event with the dispatcher.
+     * Register a permission detached racl event with the dispatcher.
      *
      * @param  \Closure|string  $callback
      * @return void
      */
     public static function permissionDetached($callback)
     {
-        static::registerLaratrustEvent('permission.detached', $callback);
+        static::registerRaclEvent('permission.detached', $callback);
     }
 
     /**
-     * Register a role synced laratrust event with the dispatcher.
+     * Register a role synced racl event with the dispatcher.
      *
      * @param  \Closure|string  $callback
      * @return void
      */
     public static function roleSynced($callback)
     {
-        static::registerLaratrustEvent('role.synced', $callback);
+        static::registerRaclEvent('role.synced', $callback);
     }
 
     /**
-     * Register a permission synced laratrust event with the dispatcher.
+     * Register a permission synced racl event with the dispatcher.
      *
      * @param  \Closure|string  $callback
      * @return void
      */
     public static function permissionSynced($callback)
     {
-        static::registerLaratrustEvent('permission.synced', $callback);
+        static::registerRaclEvent('permission.synced', $callback);
     }
 }

@@ -1,23 +1,23 @@
 <?php
 
-namespace Laratrust\Models;
+namespace Racl\Models;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
-use Laratrust\Contracts\LaratrustTeamInterface;
-use Laratrust\Traits\LaratrustTeamTrait;
+use Racl\Contracts\RaclTeamInterface;
+use Racl\Traits\RaclTeamTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Config;
 
-class LaratrustTeam extends Model implements LaratrustTeamInterface
+class RaclTeam extends Model implements RaclTeamInterface
 {
-    use LaratrustTeamTrait;
+    use RaclTeamTrait;
 
     /**
      * The database table used by the model.
@@ -35,6 +35,6 @@ class LaratrustTeam extends Model implements LaratrustTeamInterface
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        $this->table = Config::get('laratrust.tables.teams');
+        $this->table = Config::get('racl.tables.teams');
     }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\GeneratorCommand;
@@ -20,7 +20,7 @@ class MakePermissionCommand extends GeneratorCommand
      *
      * @var string
      */
-    protected $name = 'laratrust:permission';
+    protected $name = 'racl:permission';
 
     /**
      * The console command description.
@@ -53,7 +53,7 @@ class MakePermissionCommand extends GeneratorCommand
      */
     protected function getNameInput()
     {
-        return Config::get('laratrust.models.permission', 'Permission');
+        return Config::get('racl.models.permission', 'Permission');
     }
 
     /**

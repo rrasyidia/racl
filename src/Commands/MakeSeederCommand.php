@@ -1,13 +1,13 @@
 <?php
 
-namespace Laratrust\Commands;
+namespace Racl\Commands;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
 use Illuminate\Console\Command;
@@ -21,14 +21,14 @@ class MakeSeederCommand extends Command
      *
      * @var string
      */
-    protected $name = 'laratrust:seeder';
+    protected $name = 'racl:seeder';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Creates the seeder following the Laratrust specifications.';
+    protected $description = 'Creates the seeder following the Racl specifications.';
 
     /**
      * Execute the console command.
@@ -37,12 +37,12 @@ class MakeSeederCommand extends Command
      */
     public function handle()
     {
-        $this->laravel->view->addNamespace('laratrust', substr(__DIR__, 0, -8).'views');
+        $this->laravel->view->addNamespace('racl', substr(__DIR__, 0, -8).'views');
 
         if (file_exists($this->seederPath())) {
             $this->line('');
 
-            $this->warn("The LaratrustSeeder file already exists. Delete the existing one if you want to create a new one.");
+            $this->warn("The RaclSeeder file already exists. Delete the existing one if you want to create a new one.");
             $this->line('');
             return;
         }
@@ -66,14 +66,14 @@ class MakeSeederCommand extends Command
      */
     protected function createSeeder()
     {
-        $permission = Config::get('laratrust.models.permission', 'App\Permission');
-        $role = Config::get('laratrust.models.role', 'App\Role');
-        $rolePermissions = Config::get('laratrust.tables.permission_role');
-        $roleUsers = Config::get('laratrust.tables.role_user');
-        $user = new Collection(Config::get('laratrust.user_models', ['App\User']));
+        $permission = Config::get('racl.models.permission', 'App\Permission');
+        $role = Config::get('racl.models.role', 'App\Role');
+        $rolePermissions = Config::get('racl.tables.permission_role');
+        $roleUsers = Config::get('racl.tables.role_user');
+        $user = new Collection(Config::get('racl.user_models', ['App\User']));
         $user = $user->first();
 
-        $output = $this->laravel->view->make('laratrust::seeder')
+        $output = $this->laravel->view->make('racl::seeder')
             ->with(compact([
                 'role',
                 'permission',
@@ -99,6 +99,6 @@ class MakeSeederCommand extends Command
      */
     protected function seederPath()
     {
-        return database_path("seeds/LaratrustSeeder.php");
+        return database_path("seeds/RaclSeeder.php");
     }
 }

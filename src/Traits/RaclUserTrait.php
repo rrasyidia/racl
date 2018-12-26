@@ -1,24 +1,24 @@
 <?php
 
-namespace Laratrust\Traits;
+namespace Racl\Traits;
 
 /**
- * This file is part of Laratrust,
+ * This file is part of Racl,
  * a role & permission management solution for Laravel.
  *
  * @license MIT
- * @package Laratrust
+ * @package Racl
  */
 
-use Laratrust\Helper;
+use Racl\Helper;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 
-trait LaratrustUserTrait
+trait RaclUserTrait
 {
-    use LaratrustHasEvents;
+    use RaclHasEvents;
 
     /**
      * Boots the user model and attaches event listener to
@@ -27,7 +27,7 @@ trait LaratrustUserTrait
      *
      * @return void|bool
      */
-    public static function bootLaratrustUserTrait()
+    public static function bootRaclUserTrait()
     {
         $flushCache = function ($user) {
             $user->flushCache();
@@ -60,9 +60,9 @@ trait LaratrustUserTrait
      */
     public function cachedRoles()
     {
-        $cacheKey = 'laratrust_roles_for_user_' . $this->getKey();
+        $cacheKey = 'racl_roles_for_user_' . $this->getKey();
 
-        if (! Config::get('laratrust.use_cache')) {
+        if (! Config::get('racl.use_cache')) {
             return $this->roles()->get();
         }
 
@@ -80,9 +80,9 @@ trait LaratrustUserTrait
      */
     public function cachedPermissions()
     {
-        $cacheKey = 'laratrust_permissions_for_user_' . $this->getKey();
+        $cacheKey = 'racl_permissions_for_user_' . $this->getKey();
 
-        if (! Config::get('laratrust.use_cache')) {
+        if (! Config::get('racl.use_cache')) {
             return $this->permissions()->get();
         }
 
@@ -99,15 +99,15 @@ trait LaratrustUserTrait
     public function roles()
     {
         $roles = $this->morphToMany(
-            Config::get('laratrust.models.role'),
+            Config::get('racl.models.role'),
             'user',
-            Config::get('laratrust.tables.role_user'),
-            Config::get('laratrust.foreign_keys.user'),
-            Config::get('laratrust.foreign_keys.role')
+            Config::get('racl.tables.role_user'),
+            Config::get('racl.foreign_keys.user'),
+            Config::get('racl.foreign_keys.role')
         );
 
-        if (Config::get('laratrust.use_teams')) {
-            $roles->withPivot(Config::get('laratrust.foreign_keys.team'));
+        if (Config::get('racl.use_teams')) {
+            $roles->withPivot(Config::get('racl.foreign_keys.team'));
         }
 
         return $roles;
@@ -121,15 +121,15 @@ trait LaratrustUserTrait
     public function permissions()
     {
         $permissions = $this->morphToMany(
-            Config::get('laratrust.models.permission'),
+            Config::get('racl.models.permission'),
             'user',
-            Config::get('laratrust.tables.permission_user'),
-            Config::get('laratrust.foreign_keys.user'),
-            Config::get('laratrust.foreign_keys.permission')
+            Config::get('racl.tables.permission_user'),
+            Config::get('racl.foreign_keys.user'),
+            Config::get('racl.foreign_keys.permission')
         );
 
-        if (Config::get('laratrust.use_teams')) {
-            $permissions->withPivot(Config::get('laratrust.foreign_keys.team'));
+        if (Config::get('racl.use_teams')) {
+            $permissions->withPivot(Config::get('racl.foreign_keys.team'));
         }
 
         return $permissions;
@@ -172,7 +172,7 @@ trait LaratrustUserTrait
         $team = Helper::fetchTeam($team);
 
         foreach ($this->cachedRoles() as $role) {
-            $role = Helper::hidrateModel(Config::get('laratrust.models.role'), $role);
+            $role = Helper::hidrateModel(Config::get('racl.models.role'), $role);
 
             if ($role->name == $name && Helper::isInSameTeam($role, $team)) {
                 return true;
@@ -245,7 +245,7 @@ trait LaratrustUserTrait
         $team = Helper::fetchTeam($team);
 
         foreach ($this->cachedPermissions() as $perm) {
-            $perm = Helper::hidrateModel(Config::get('laratrust.models.permission'), $perm);
+            $perm = Helper::hidrateModel(Config::get('racl.models.permission'), $perm);
 
             if (Helper::isInSameTeam($perm, $team)
                 && str_is($permission, $perm->name)) {
@@ -254,7 +254,7 @@ trait LaratrustUserTrait
         }
 
         foreach ($this->cachedRoles() as $role) {
-            $role = Helper::hidrateModel(Config::get('laratrust.models.role'), $role);
+            $role = Helper::hidrateModel(Config::get('racl.models.role'), $role);
 
             if (Helper::isInSameTeam($role, $team)
                 && $role->hasPermission($permission)
@@ -361,13 +361,13 @@ trait LaratrustUserTrait
         $objectType = Str::singular($relationship);
         $object = Helper::getIdFor($object, $objectType);
 
-        if (Config::get('laratrust.use_teams')) {
+        if (Config::get('racl.use_teams')) {
             $team = Helper::getIdFor($team, 'team');
 
             if (
                     $this->$relationship()
                     ->wherePivot(Helper::teamForeignKey(), $team)
-                    ->wherePivot(Config::get("laratrust.foreign_keys.{$objectType}"), $object)
+                    ->wherePivot(Config::get("racl.foreign_keys.{$objectType}"), $object)
                     ->count()
                 ) {
                 return $this;
@@ -381,7 +381,7 @@ trait LaratrustUserTrait
             $attributes
         );
         $this->flushCache();
-        $this->fireLaratrustEvent("{$objectType}.attached", [$this, $object, $team]);
+        $this->fireRaclEvent("{$objectType}.attached", [$this, $object, $team]);
 
         return $this;
     }
@@ -403,7 +403,7 @@ trait LaratrustUserTrait
         $objectType = Str::singular($relationship);
         $relationshipQuery = $this->$relationship();
 
-        if (Config::get('laratrust.use_teams')) {
+        if (Config::get('racl.use_teams')) {
             $relationshipQuery->wherePivot(
                     Helper::teamForeignKey(),
                     Helper::getIdFor($team, 'team')
@@ -414,7 +414,7 @@ trait LaratrustUserTrait
         $relationshipQuery->detach($object);
 
         $this->flushCache();
-        $this->fireLaratrustEvent("{$objectType}.detached", [$this, $object, $team]);
+        $this->fireRaclEvent("{$objectType}.detached", [$this, $object, $team]);
 
         return $this;
     }
@@ -436,7 +436,7 @@ trait LaratrustUserTrait
 
         $objectType = Str::singular($relationship);
         $mappedObjects = [];
-        $useTeams = Config::get('laratrust.use_teams');
+        $useTeams = Config::get('racl.use_teams');
         $team = $useTeams ? Helper::getIdFor($team, 'team') : null;
 
         foreach ($objects as $object) {
@@ -456,7 +456,7 @@ trait LaratrustUserTrait
         $result = $relationshipToSync->sync($mappedObjects, $detaching);
 
         $this->flushCache();
-        $this->fireLaratrustEvent("{$objectType}.synced", [$this, $result, $team]);
+        $this->fireRaclEvent("{$objectType}.synced", [$this, $result, $team]);
 
         return $this;
     }
@@ -640,7 +640,7 @@ trait LaratrustUserTrait
      */
     public function owns($thing, $foreignKeyName = null)
     {
-        if ($thing instanceof \Laratrust\Contracts\Ownable) {
+        if ($thing instanceof \Racl\Contracts\Ownable) {
             $ownerKey = $thing->ownerKey($this);
         } else {
             $className = (new \ReflectionClass($this))->getShortName();
@@ -739,8 +739,8 @@ trait LaratrustUserTrait
      */
     public function flushCache()
     {
-        Cache::forget('laratrust_roles_for_user_' . $this->getKey());
-        Cache::forget('laratrust_permissions_for_user_' . $this->getKey());
+        Cache::forget('racl_roles_for_user_' . $this->getKey());
+        Cache::forget('racl_permissions_for_user_' . $this->getKey());
     }
 
     /**
@@ -752,7 +752,7 @@ trait LaratrustUserTrait
      */
     private function handleMagicCan($method, $parameters)
     {
-        $case = str_replace('_case', '', Config::get('laratrust.magic_can_method_case'));
+        $case = str_replace('_case', '', Config::get('racl.magic_can_method_case'));
         $method = preg_replace('/^can/', '', $method);
 
         if ($case == 'kebab') {
