@@ -1,12 +1,12 @@
 {
-    "name": "santigarcor/laratrust",
-    "description": "This package provides a flexible way to add Role-based Permissions to Laravel",
+    "name": "rrasyidia/racl",
+    "description": "This package provides based on santiagor laratrust a flexible way to add Role-based Permissions to Laravel",
     "keywords": ["acl", "authorization", "laravel","laratrust","permissions","php", "rbac","roles", "multiusers", "teams"],
     "license": "MIT",
     "authors": [
         {
-            "name": "Santiago Garcia",
-            "homepage": "http://santigarcor.me"
+            "name": "Ammar R Rasyidi",
+            "email": "ammar.r.rasyidi@gmail.com"
         }
     ],
     "require": {
@@ -25,12 +25,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Laratrust\\": "src/"
+            "Racl\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Laratrust\\Tests\\": "tests/"
+            "Racl\\Tests\\": "tests/"
         }
     },
     "config": {
@@ -41,10 +41,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Laratrust\\LaratrustServiceProvider"
+                "Racl\\RaclServiceProvider"
             ],
             "aliases": {
-                "Laratrust": "Laratrust\\LaratrustFacade"
+                "Racl": "Racl\\RaclFacade"
             }
         }
     }
